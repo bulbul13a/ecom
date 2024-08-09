@@ -16,7 +16,7 @@ public class AttributeInfoServiceImpl implements AttributeInfoService{
 	private AttributeInfoRepository attributeInfoRepository;
 	
 	@Override
-	public ResponseEntity<?> add(AttributeInfo attributeInfo){
+	public ResponseEntity<?> addAttributeInfo(AttributeInfo attributeInfo){
 		if(Objects.isNull(attributeInfo.getAttributeName())|| attributeInfo.getAttributeName().trim().isEmpty()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Invalid name"));
 		}
@@ -37,5 +37,14 @@ public class AttributeInfoServiceImpl implements AttributeInfoService{
 			attributeInfoRepository.deleteById(id);
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Element deleted"));
+	}
+
+	@Override
+	public ResponseEntity<?> update(Long id, AttributeInfo attributeInfo) {
+		Optional<AttributeInfo> optionalExistingAI = attributeInfoRepository.findById(id);
+		if(optionalExistingAI.isPresent()) {
+			optionalExistingAI.get().setAttributeid(attributeInfo.getAttributeid());
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Not Found"));
 	}
 }
